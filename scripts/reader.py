@@ -10,6 +10,8 @@ NUMBER_EXPECTED_MESSAGE = [None
         , 'Expecting one natural number on a line with no leading or trailing spaces.'
         , 'Expecting two natural numbers separated by a single space on a line with no leading or trailing spaces.']
 
+#TODO-change to module instead of classes
+
 class ReaderException(BaseException):
     def __init__(self, line_num, case_num, line, message):
         self.line_num = line_num

@@ -1,6 +1,8 @@
 import config
 from config import MAX_NUM_NODES
 
+#TODO - add cmt
+
 class EdgeException(Exception):
     def __init__(self, value):
         self.value = value
@@ -34,8 +36,8 @@ class Edge:
             raise EdgeException('Self-loop not allowed in '+
                     'edge {0}.'.format(self))
 
-def make_graph(edge_set):
-    G = Graph(config.MAX_NUM_NODES)
+def make_graph(edge_set, num_vertex=config.MAX_NUM_NODES):
+    G = Graph(num_vertex)
 
     for e in edge_set:
         G.add_edge(e)
@@ -43,11 +45,12 @@ def make_graph(edge_set):
     return G
 
 class Graph:
-    def __init__(self, numNodes):
-        self.neighbors = [ [] for i in range(numNodes) ]
+    def __init__(self, num_nodes):
+        self.neighbors = [ [] for i in range(num_nodes) ]
         self.num_of_components = 0
         self.num_nodes = 0
         self.num_leaves = 0
+        self.num_vertex = num_nodes
         self.has_cycle = False
 
     def add_edge(self, e):
@@ -62,6 +65,9 @@ class Graph:
 
     def edges_in_one_component(self):
         return self.num_of_components == 1
+    
+    def get_num_vertex(self):
+        return self.num_vertex
 
     def search(self):
         visited = [ False for i in range(config.MAX_NUM_NODES) ]

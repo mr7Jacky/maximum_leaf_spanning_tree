@@ -1,3 +1,4 @@
+#TODO-move to constants
 MAX_NUM_NODES = 100
 MAX_NUM_EDGES = 2000
 

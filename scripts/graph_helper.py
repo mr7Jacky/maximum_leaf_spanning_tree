@@ -1,5 +1,4 @@
-from graph import *
-from constants import *
+from graph import Edge, Graph, make_graph
 from random import shuffle
 import networkx as nx
 import matplotlib.pyplot as plt
@@ -96,9 +95,10 @@ def get_leaves(tree):
 
 
 # Returns a deep copy of the given graph
-def create_copy(graph):
+def create_copy(graph: Graph):
 	edges = get_edges(graph)
-	return make_graph(edges)
+	num_vertex = graph.get_num_vertex()
+	return make_graph(edges, num_vertex)
 
 
 # Returns whether the given graph is a tree

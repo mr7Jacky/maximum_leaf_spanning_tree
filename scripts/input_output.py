@@ -1,5 +1,5 @@
 from graph import *
-from graph_helper import *
+from graph_helper import get_leaves, get_edges
 from constants import *
 from collections import deque
 
@@ -14,6 +14,7 @@ def input_graphs_from_file(file_name):
 	# Read in raw lines
 	with open(file_name) as input_file:
 		raw_lines = input_file.readlines()
+	print(raw_lines)
 
 	# Strip newline from each line
 	for i in range(len(raw_lines)):
@@ -34,7 +35,10 @@ def input_graphs_from_file(file_name):
 	# Read lines in nested structure
 	for _ in range(number_of_graphs):
 		edges = []
-		number_of_edges = int(lines.popleft())
+		edge_vtx_info = lines.popleft().split()
+		number_of_vertices = int(edge_vtx_info[0])
+		number_of_edges = int(edge_vtx_info[1])
+
 
 		for _ in range(number_of_edges):
 			edge_ends = lines.popleft().split()
@@ -42,7 +46,7 @@ def input_graphs_from_file(file_name):
 			v = int(edge_ends[1])
 			edges.append(Edge(u, v))
 
-		graph = make_graph(edges)
+		graph = make_graph(edges, number_of_vertices)
 		graphs.append(graph)
 
 	return graphs
@@ -53,8 +57,9 @@ def input_graphs_from_file(file_name):
 def output_graphs_to_new_file(graphs, file_name):
 	output_file = open(file_name, 'w')
 
-	number_of_graphs = len(graphs)
-	output_file.write(str(number_of_graphs) + '\n')
+	# Output number of graphs
+	# number_of_graphs = len(graphs)
+	# output_file.write(str(number_of_graphs) + '\n')
 
 	for graph in graphs:
 		output_graph_to_existing_file(graph, output_file)
@@ -63,14 +68,15 @@ def output_graphs_to_new_file(graphs, file_name):
 
 
 # Outputs the graph to a text file in the format given by instructors
-def output_graph_to_existing_file(graph, output_file):
+def output_graph_to_existing_file(graph: Graph, output_file):
 
 	# Build a list of distinct edges
 	edges = get_edges(graph)
+	number_of_leaves = get_leaves(graph) #TODO- calc number of leaves
 
 	# Output number of edges in this graph to file
 	number_of_edges = len(edges)
-	output_file.write(str(number_of_edges) + '\n')
+	output_file.write(str(number_of_leaves) + ' ' + str(number_of_edges) + '\n')
 
 	# Output all the edges in this graph to file
 	for edge in edges:

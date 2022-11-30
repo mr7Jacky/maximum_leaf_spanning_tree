@@ -1,6 +1,14 @@
-Maximum Leaf Spanning Tree Competition
+# Maximum Leaf Spanning Tree Project
 
+#### Introduction
+This project is adapted from [Berkeley CS 170 Maximum Leaf Spanning Tree contest](https://github.com/jimmyjwu/maximum_leaf_spanning_tree). We restructured the algorithm and change the file I/Os.
 
+#### Team member
+* Jiaqi Lin
+* Liang Liu
+* Yi Jiang
+
+#### File Structure
 FILE_FORMAT			- Specifies the file format for inputs (graphs) and outputs (trees).
 
 Papers/				- Contains useful academic research papers.
