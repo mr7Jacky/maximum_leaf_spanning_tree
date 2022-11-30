@@ -2,7 +2,7 @@ from graph import *
 from constants import *
 from random import shuffle
 import networkx as nx
-# import matplotlib.pyplot as plt
+import matplotlib.pyplot as plt
 
 """
 This file contains convenient helper methods for graphs.

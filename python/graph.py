@@ -1,4 +1,5 @@
 import config
+from config import MAX_NUM_NODES
 
 class EdgeException(Exception):
     def __init__(self, value):

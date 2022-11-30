@@ -38,14 +38,14 @@ def Ackerman(inp, memo={0:1}):
 	if inp in memo:
 		return memo[inp]
 	elif inp <= 5:
-		memo[inp] = 2**ackerman(inp-1)
+		memo[inp] = 2**Ackerman(inp-1)
 		return memo[inp]
 	else:
-		print "Such a number is not representable by all the subatomic\nparticles in the universe."
-		ackerman(4);
+		print ("Such a number is not representable by all the subatomic\nparticles in the universe.")
+		Ackerman(4)
 		out = (inp-4)*"2**" + str(memo[4])
-		print out
-		raise Exception, "NumberCannotBeRepresentedByAllSubatomicParticlesInUniverse"
+		print (out)
+		raise Exception ("NumberCannotBeRepresentedByAllSubatomicParticlesInUniverse")
 
 def inverseAckerman(inp):
     t = 0
@@ -121,7 +121,7 @@ class UnionFind:
     """
     def __str__(self):
         sets = {}
-        for i in xrange(len(self.objects_to_num)):
+        for i in range(len(self.objects_to_num)):
             sets[i] = []
         for i in self.objects_to_num:
             sets[self.objects_to_num[self.find(i)]].append(i)
@@ -133,7 +133,7 @@ class UnionFind:
 
 
 if __name__ == '__main__':
-    print "Testing..."
+    print ("Testing...")
     uf = UnionFind()
     az = "abcdefghijklmnopqrstuvwxyz"
     az += az.upper()
@@ -143,5 +143,5 @@ if __name__ == '__main__':
     while len(uf.num_weights) > 20:
         cnt += 1
         uf.union(random.choice(az), random.choice(az))
-    print uf, cnt
-    print "Testing complete."
+    print (uf, cnt)
+    print ("Testing complete.")

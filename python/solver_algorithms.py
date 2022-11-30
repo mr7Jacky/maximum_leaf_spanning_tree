@@ -1,4 +1,4 @@
-import util
+#from . import util
 from graph import *
 from graph_helper import *
 from constants import *

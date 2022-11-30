@@ -137,5 +137,5 @@ def plot_all_input_graphs():
 	graphs = input_graphs_from_file("hard.all.v3.in")
 	for graph in graphs:
 		plot_graph(graph)
-		raw_input()
+		input()
 
