@@ -1,4 +1,3 @@
-#from . import util
 from graph import *
 from graph_helper import *
 from constants import *
@@ -152,12 +151,6 @@ def joined_forest_tree(graph):
 	leafy_spanning_tree = create_spanning_tree_from_forest(leafy_forest, unused_edges)
 
 	return leafy_spanning_tree
-
-
-# YOUR CLEVER ALGORITHMS HERE
-
-
-
 
 # Maintain a list of all (algorithm name, algorithm function) so that they can be
 # systematically called from graph_solver.py

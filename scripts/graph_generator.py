@@ -134,7 +134,7 @@ def graph_containing_tree(tree):
 
 #Plots all graphs:
 def plot_all_input_graphs():
-	graphs = input_graphs_from_file("hard.all.v3.in")
+	graphs = input_graphs_from_file("new_example.in")
 	for graph in graphs:
 		plot_graph(graph)
 		input()

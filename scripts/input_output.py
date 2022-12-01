@@ -2,6 +2,7 @@ from graph import *
 from graph_helper import get_leaves, get_edges
 from constants import *
 from collections import deque
+import numpy as np
 
 """
 This file contains functions for reading graphs from files and writing them to files.
@@ -14,7 +15,6 @@ def input_graphs_from_file(file_name):
 	# Read in raw lines
 	with open(file_name) as input_file:
 		raw_lines = input_file.readlines()
-	print(raw_lines)
 
 	# Strip newline from each line
 	for i in range(len(raw_lines)):
@@ -48,7 +48,7 @@ def input_graphs_from_file(file_name):
 
 		graph = make_graph(edges, number_of_vertices)
 		graphs.append(graph)
-
+	print(graphs)
 	return graphs
 
 
@@ -76,7 +76,7 @@ def output_graph_to_existing_file(graph: Graph, output_file):
 
 	# Output number of edges in this graph to file
 	number_of_edges = len(edges)
-	output_file.write(str(number_of_leaves) + ' ' + str(number_of_edges) + '\n')
+	output_file.write(str(np.max(number_of_leaves)) + ' ' + str(number_of_edges) + '\n')
 
 	# Output all the edges in this graph to file
 	for edge in edges:
