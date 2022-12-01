@@ -7,11 +7,11 @@ import numpy as np
 
 
 """
-This file contains functions for reading graphs from files and writing them to files.
+modify format of hard.in
 """
 def do_everything():
 	dirname=os.path.dirname
-	format_instance(os.path.join(dirname(dirname(__file__)), "sample/hard.in"))
+	format_instance(os.path.join(dirname(dirname(__file__)), "sample/OURHARD.in"))
 # Reads and returns all graphs in the given text file
 # NOTE: Graphs must be in format given by instructors
 def format_instance(file_name):
@@ -35,8 +35,8 @@ def format_instance(file_name):
 		number_of_graphs = int(lines.popleft())
 	else:
 		return []
-	with open(file_name, 'w') as ourfile:
-		ourfile.writelines(raw_lines)
+	# with open(file_name, 'w') as ourfile:
+	# 	ourfile.writelines(raw_lines)
 	index = 0
 	# Read lines in nested structure
 	for _ in range(number_of_graphs):
