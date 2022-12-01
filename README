@@ -10,7 +10,25 @@ This project is adapted from [Berkeley CS 170 Maximum Leaf Spanning Tree contest
 
 #### Quick Start
 ```bash
-python scripts/
+python solver.py
+```
+
+#### Usage
+```bash
+usage: solver.py [-h] [-r NUM_RAND_RUNS] [-m {rand,forest}] [-n MAX_NUM_NODES] [-i INPUT] [-o OUTPUT]
+
+options:
+  -h, --help            show this help message and exit
+  -r NUM_RAND_RUNS, --num_rand_runs NUM_RAND_RUNS
+                        Number of random runs for spanning tree algorithm
+  -m {rand,forest}, --mode {rand,forest}
+                        Choose which algorithm to use,"rand" represent randomized tree algorithm"forest" represent joined forest tree algorithm
+  -n MAX_NUM_NODES, --max_num_nodes MAX_NUM_NODES
+                        Maximum number of nodes in a graph
+  -i INPUT, --input INPUT
+                        Input file path
+  -o OUTPUT, --output OUTPUT
+                        Output file path
 ```
 
 #### File Structure
