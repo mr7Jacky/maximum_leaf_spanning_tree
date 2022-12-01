@@ -1,7 +1,4 @@
-import config
-from config import MAX_NUM_NODES
-
-#TODO - add cmt
+MAX_NUM_NODES = 100
 
 class EdgeException(Exception):
     def __init__(self, value):
@@ -18,7 +15,7 @@ class Edge:
         return '({0},{1})'.format(self.ends[0], self.ends[1])
 
     def __hash__(self):
-        return self.ends[0] * config.MAX_NUM_NODES + self.ends[1]
+        return self.ends[0] * MAX_NUM_NODES + self.ends[1]
 
     def __cmp__(self):
         return object.__cmp__(self)
@@ -28,7 +25,7 @@ class Edge:
 
     def check(self):
         for i in range(2):
-            if self.ends[i] < 0 or self.ends[i] >= config.MAX_NUM_NODES:
+            if self.ends[i] < 0 or self.ends[i] >= MAX_NUM_NODES:
                 raise EdgeException(('Node {0} out of range [0--{1}] '+
                     'in edge {2}.').format(self.ends[i], MAX_NUM_NODES-1,
                         self))
@@ -36,7 +33,7 @@ class Edge:
             raise EdgeException('Self-loop not allowed in '+
                     'edge {0}.'.format(self))
 
-def make_graph(edge_set, num_vertex=config.MAX_NUM_NODES):
+def make_graph(edge_set, num_vertex=MAX_NUM_NODES):
     G = Graph(num_vertex)
 
     for e in edge_set:
@@ -70,7 +67,7 @@ class Graph:
         return self.num_vertex
 
     def search(self):
-        visited = [ False for i in range(config.MAX_NUM_NODES) ]
+        visited = [ False for i in range(MAX_NUM_NODES) ]
         self.num_nodes = 0
         self.num_leaves = 0
         self.num_of_components = 0

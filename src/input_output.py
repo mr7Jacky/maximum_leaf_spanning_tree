@@ -1,6 +1,5 @@
-from graph import *
+from graph import Graph, Edge, make_graph
 from graph_helper import get_leaves, get_edges
-from constants import *
 from collections import deque
 import numpy as np
 
@@ -48,7 +47,7 @@ def input_graphs_from_file(file_name):
 
 		graph = make_graph(edges, number_of_vertices)
 		graphs.append(graph)
-	print(graphs)
+		
 	return graphs
 
 

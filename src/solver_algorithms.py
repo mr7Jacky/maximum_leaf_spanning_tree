@@ -1,7 +1,7 @@
-from graph import *
-from graph_helper import *
-from constants import *
-from disjointsets import *
+from graph import Edge, Graph, make_graph, MAX_NUM_NODES
+from graph_helper import get_leaves, shuffle, create_copy, \
+	get_edges, get_nodes, get_edge_difference
+from disjointsets import UnionFind
 
 """
 This file contains all the algorithms we have written to extract a leafy spanning tree
@@ -17,6 +17,8 @@ IMPORTANT: At the bottom of this file, make sure that all algorithm functions ar
 in the ALGORITHMS list. This allows them to be called from graph_solver.py.
 """
 
+NUM_RAND_RUNS = 100
+
 def randomized_tree(graph):
 	
 	# Fill out graph attributes
@@ -27,10 +29,10 @@ def randomized_tree(graph):
 	# Bests so far
 	most_leaves = 0
 	best_tree = None
-
+	
 	# Run N iterations of randomized algorithm, save the best 
-	for i in range(0, NUMBER_OF_RANDOM_RUNS):
-
+	for i in range(0, NUM_RAND_RUNS):
+		
 		# Add all vertices of graph to disjoint set
 		disjoint_set = UnionFind()
 		disjoint_set.insert_objects(nodes)
@@ -39,7 +41,7 @@ def randomized_tree(graph):
 		shuffle(edges)
 
 		num_edges = 0
-		current_tree = Graph(MAXIMUM_NUMBER_OF_NODES)
+		current_tree = Graph(MAX_NUM_NODES)
 
 		# Build graph
 		for edge in edges:
