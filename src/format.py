@@ -30,7 +30,6 @@ def format_instance(file_name):
 	# Store lines in a queue (using deque) for efficient processing
 	lines = deque(raw_lines)
 
-
 	# Read the number of graphs in file
 	if len(lines) > 0:
 		number_of_graphs = int(lines.popleft())
@@ -56,34 +55,4 @@ def format_instance(file_name):
 	with open(file_name, 'w') as ourfile:
 		ourfile.writelines(raw_lines_1)
 
-# Outputs several graphs to a text file in the format given by instructors
-# NOTE: Overwrites existing file with same name
-def output_graphs_to_new_file(graphs, file_name):
-	output_file = open(file_name, 'w')
 
-	# Output number of graphs
-	# number_of_graphs = len(graphs)
-	# output_file.write(str(number_of_graphs) + '\n')
-
-	for graph in graphs:
-		output_graph_to_existing_file(graph, output_file)
-
-	output_file.close()
-
-
-# Outputs the graph to a text file in the format given by instructors
-def output_graph_to_existing_file(graph: Graph, output_file):
-
-	# Build a list of distinct edges
-	edges = get_edges(graph)
-	number_of_leaves = get_leaves(graph) #TODO- calc number of leaves
-
-	# Output number of edges in this graph to file
-	number_of_edges = len(edges)
-	output_file.write(str(np.max(number_of_leaves)) + ' ' + str(number_of_edges) + '\n')
-
-	# Output all the edges in this graph to file
-	for edge in edges:
-		u = edge.ends[0]
-		v = edge.ends[1]
-		output_file.write(str(u) + ' ' + str(v) + '\n')
