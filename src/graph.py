@@ -65,7 +65,7 @@ class Graph:
     def add_directed_edge_uv(self, u, v):
         self.neighbors[u].append(v)
 
-    # Return if the edges in one component
+    # Check if the edges are in one component
     def edges_in_one_component(self):
         return self.num_of_components == 1
 
