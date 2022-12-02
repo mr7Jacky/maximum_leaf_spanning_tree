@@ -1,6 +1,6 @@
 from graph import Edge, Graph, make_graph, MAX_NUM_NODES
 from graph_helper import get_leaves, shuffle, create_copy, \
-	get_edges, get_nodes, get_edge_difference
+    get_edges, get_nodes, get_edge_difference
 from disjointsets import UnionFind
 
 """
@@ -19,146 +19,150 @@ in the ALGORITHMS list. This allows them to be called from graph_solver.py.
 
 NUM_RAND_RUNS = 100
 
+
 def randomized_tree(graph):
-	
-	# Fill out graph attributes
-	graph.search()
-	nodes = get_nodes(graph)
-	edges = get_edges(graph)
+    # Fill out graph attributes
+    graph.search()
+    nodes = get_nodes(graph)  # Get a list of nodes in the graph
+    edges = get_edges(graph)  # Get a list of edges in the graph
 
-	# Bests so far
-	most_leaves = 0
-	best_tree = None
-	
-	# Run N iterations of randomized algorithm, save the best 
-	for i in range(0, NUM_RAND_RUNS):
-		
-		# Add all vertices of graph to disjoint set
-		disjoint_set = UnionFind()
-		disjoint_set.insert_objects(nodes)
+    # Bests so far
+    most_leaves = 0
+    best_tree = None
 
-		# Shuffle edges to make function stochastic
-		shuffle(edges)
+    # Run N iterations of randomized algorithm, save the best
+    for i in range(0, NUM_RAND_RUNS):
 
-		num_edges = 0
-		current_tree = Graph(MAX_NUM_NODES)
+        # Add all vertices of graph to disjoint set
+        disjoint_set = UnionFind()
+        disjoint_set.insert_objects(nodes)
 
-		# Build graph
-		for edge in edges:
-			u, v = edge.ends
+        # Shuffle edges to make function stochastic
+        shuffle(edges)
 
-			# Add edge if it doesn't create a cycle
-			if disjoint_set.find(u) != disjoint_set.find(v):
-				disjoint_set.union(u, v)
-				current_tree.add_edge(edge)
-				num_edges += 1
+        num_edges = 0
+        current_tree = Graph(MAX_NUM_NODES)
 
-			# Check leaves when tree is complete, |E| = |V| - 1
-			if num_edges == len(nodes) - 1:
-				num_leaves = len(get_leaves(current_tree))
-				
-				# Update best_tree if better num_leaves
-				if num_leaves > most_leaves:
-					most_leaves = num_leaves
-					best_tree = current_tree
+        # Build graph
+        for edge in edges:
+            u, v = edge.ends
 
-				break
+            # Add edge if it doesn't create a cycle
+            if disjoint_set.find(u) != disjoint_set.find(v):
+                disjoint_set.union(u, v)
+                current_tree.add_edge(edge)
+                num_edges += 1
 
-	return best_tree
+            # Check leaves when tree is complete, |E| = |V| - 1
+            if num_edges == len(nodes) - 1:
+                num_leaves = len(get_leaves(current_tree))
+
+                # Update best_tree if better num_leaves
+                if num_leaves > most_leaves:
+                    most_leaves = num_leaves
+                    best_tree = current_tree
+
+                break
+
+    return best_tree
 
 
 # Implements the Lu-Ravi algorithm in the paper "Approximating Maximum Leaf
 # Spanning Trees in Almost Linear Time"
 def joined_forest_tree(graph):
+    def maximally_leafy_forest(graph):
+        # Initialization
+        G = create_copy(graph)
+        E = get_edges(G)
+        V = get_nodes(G)
+        S = UnionFind()
+        d = {}  # d: The degree of nodes
+        F = set()  # The edges set that can create a maximally leafy forest of G
 
-	def maximally_leafy_forest(graph):
-		# Initialization
-		G = create_copy(graph)
-		E = get_edges(G)
-		V = get_nodes(G)
-		S = UnionFind()
-		d = {}
-		F = set()
+        for v in V:
+            S.find(v)  # S(v): initialize the subtree of F that contains node v is only one node v
+            d[v] = 0  # d(v): initialize the degree of node v in F is 0
 
-		for v in V:
-			S.find(v)
-			d[v] = 0
+        for v in V:
+            S_prime = {}  # S': Maps vertex to union-find set index
 
-		for v in V:
-			S_prime = {}	# Maps vertex to union-find set index
-			d_prime = 0
-			for u in G.neighbors[v]:
-				if S.find(u) != S.find(v) and S.find(u) not in S_prime.values():
-					d_prime += 1
-					S_prime[u] = S.find(u)
-			if d[v] + d_prime >= 3:
-				for u in S_prime:
-					F.add(Edge(u,v))
-					S.union(u, v)
-					d[u] += 1
-					d[v] += 1
+            # d': The maximal number of edges adjacent to v that could be added to F without creating cycles.
+            d_prime = 0
 
-		return make_graph(F)
+            for u in G.neighbors[v]:
+                # If uv is one of those d' edges, then S(u) is stores in the set S'
+                if S.find(u) != S.find(v) and S.find(u) not in S_prime.values():
+                    d_prime += 1
+                    S_prime[u] = S.find(u)
+            # If d(v) + d' is greater than or equal to 3, then we add those d edges to F and union S(v) with those d
+            # subtrees S(u)
+            if d[v] + d_prime >= 3:
+                for u in S_prime:
+                    F.add(Edge(u, v))
+                    S.union(u, v)
+                    d[u] += 1
+                    d[v] += 1
 
-	# Takes a leafy forest (a Graph instance composed of one or more disjoint trees) and
-	# a list of unused edges in the original graph.
-	# Returns a leafy spanning tree of the original graph.
-	def create_spanning_tree_from_forest(forest, unused_edges):
+        return make_graph(F)
 
-		def is_leaf(node):
-			return len(forest.neighbors[node]) == 1
+    # Takes a leafy forest (a Graph instance composed of one or more disjoint trees) and
+    # a list of unused edges in the original graph.
+    # Returns a leafy spanning tree of the original graph.
+    def create_spanning_tree_from_forest(forest, unused_edges):
 
-		spanning_tree = create_copy(forest)
+        def is_leaf(node):
+            return len(forest.neighbors[node]) == 1
 
-		nodes = get_nodes(forest)
-		edges = get_edges(forest)
+        spanning_tree = create_copy(forest)
 
-		# Initialize meta-graph
-		connected_components = UnionFind()
-		connected_components.insert_objects(nodes)
-		for edge in edges:
-			connected_components.union(edge.ends[0], edge.ends[1])
+        nodes = get_nodes(forest)  # Get a list of nodes in the forest
+        edges = get_edges(forest)  # Get a list of edges in the forest
 
-		# Sort unused edges by tier as follows:
-		# 1. Edge from internal node to internal node
-		# 2. Edge from internal node to leaf
-		# 3. Edge from leaf to leaf
-		internal_to_internal_edges = []
-		internal_to_leaf_edges = []
-		leaf_to_leaf_edges = []
-		for edge in unused_edges:
-			u, v = edge.ends
-			if not is_leaf(u) and not is_leaf(v):
-				internal_to_internal_edges.append(edge)
-			elif is_leaf(u) and is_leaf(v):
-				leaf_to_leaf_edges.append(edge)
-			else:
-				internal_to_leaf_edges.append(edge)
-		unused_edges = internal_to_internal_edges
-		unused_edges.extend(internal_to_leaf_edges)
-		unused_edges.extend(leaf_to_leaf_edges)
+        # Initialize meta-graph
+        connected_components = UnionFind()
+        connected_components.insert_objects(nodes)  # Insert a sequence of nodes into the structure.
+        for edge in edges:
+            connected_components.union(edge.ends[0], edge.ends[1])
 
-		# Add edges (by tier) if it doesn't induce a cycle
-		for edge in unused_edges:
-			u, v = edge.ends
-			if connected_components.find(u) != connected_components.find(v):
-				spanning_tree.add_edge(edge)
-				connected_components.union(u, v)
+        # Sort unused edges by tier as follows:
+        # 1. Edge from internal node to internal node
+        # 2. Edge from internal node to leaf
+        # 3. Edge from leaf to leaf
+        internal_to_internal_edges = []
+        internal_to_leaf_edges = []
+        leaf_to_leaf_edges = []
+        for edge in unused_edges:
+            u, v = edge.ends
+            if not is_leaf(u) and not is_leaf(v):
+                internal_to_internal_edges.append(edge)
+            elif is_leaf(u) and is_leaf(v):
+                leaf_to_leaf_edges.append(edge)
+            else:
+                internal_to_leaf_edges.append(edge)
+        unused_edges = internal_to_internal_edges
+        unused_edges.extend(internal_to_leaf_edges)
+        unused_edges.extend(leaf_to_leaf_edges)
 
-		return spanning_tree
+        # Add edges (by tier) if it doesn't induce a cycle
+        for edge in unused_edges:
+            u, v = edge.ends
+            if connected_components.find(u) != connected_components.find(v):
+                spanning_tree.add_edge(edge)
+                connected_components.union(u, v)
 
-	leafy_forest = maximally_leafy_forest(graph)
+        return spanning_tree
 
-	unused_edges = get_edge_difference(graph, leafy_forest)
-	leafy_spanning_tree = create_spanning_tree_from_forest(leafy_forest, unused_edges)
+    leafy_forest = maximally_leafy_forest(graph)
 
-	return leafy_spanning_tree
+    unused_edges = get_edge_difference(graph, leafy_forest)
+    leafy_spanning_tree = create_spanning_tree_from_forest(leafy_forest, unused_edges)
+
+    return leafy_spanning_tree
+
 
 # Maintain a list of all (algorithm name, algorithm function) so that they can be
 # systematically called from graph_solver.py
 ALGORITHMS = [
-	('joined forest tree', joined_forest_tree),
-	('randomized tree', randomized_tree)
+    ('joined forest tree', joined_forest_tree),
+    ('randomized tree', randomized_tree)
 ]
-
-
