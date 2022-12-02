@@ -154,7 +154,7 @@ def joined_forest_tree(graph):
 
     leafy_forest = maximally_leafy_forest(graph)
 
-    unused_edges = get_edge_difference(graph, leafy_forest)
+    unused_edges = get_edge_difference(graph, leafy_forest)  # Get a list of edges in the graph but not in leafy_forest
     leafy_spanning_tree = create_spanning_tree_from_forest(leafy_forest, unused_edges)
 
     return leafy_spanning_tree
