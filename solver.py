@@ -16,8 +16,8 @@ if __name__ == "__main__":
                                                                                                 "\"rand\" represent randomized tree algorithm" +
                                                                                                 "\"forest\" represent joined forest tree algorithm")
     parser.add_argument('-n', '--max_num_nodes', type=int, default=100, help="Maximum number of nodes in a graph")
-    parser.add_argument('-i', '--input', type=str, default="sample/example.in", help="Input file path")
-    parser.add_argument('-o', '--output', type=str, default="sample/example.out", help="Output file path")
+    parser.add_argument('-i', '--input', type=str, default="sample/OURHARD.in", help="Input file path")
+    parser.add_argument('-o', '--output', type=str, default="sample/OURHARD.out", help="Output file path")
     args = parser.parse_args()
     # Input
     graphs = input_graphs_from_file(args.input)
